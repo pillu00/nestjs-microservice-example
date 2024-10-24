@@ -4,6 +4,6 @@ import { Injectable } from '@nestjs/common';
 export class ConsumerService {
   // TODO: define type
   storeChannels(message: any): void {
-    console.log(`Hello ${message.value}!`);
+    console.log('store message called!!');
   }
 }

@@ -1,5 +1,6 @@
 {
+    "clientId": "kafka-thingspeak-client",
     "groupId": "kafka-channels-consumer",
     "kafkaTopic": "channels-topic",
-    "broker": "localhost:9092"
+    "broker": "kafka:9092"
 }

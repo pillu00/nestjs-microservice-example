@@ -17,7 +17,7 @@ export class ConsumerController {
   // TODO: define type
   @MessagePattern(kafkaTopic)
   storeChannels(@Payload() message: any, @Ctx() context: KafkaContext): void {
-    this.logger.debug(`Topic: ${context.getTopic()}`, `Message: ${message}`);
+    this.logger.debug(`Topic: ${context.getTopic()}`, `Message: ${JSON.stringify(message)}`);
     return this.consumerService.storeChannels(message);
   }
 }
