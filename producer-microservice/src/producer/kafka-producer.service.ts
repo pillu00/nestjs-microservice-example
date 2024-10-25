@@ -28,13 +28,11 @@ export class KafkaProducerService {
     this.producer = this.kafkaInstance.producer();
   }
 
-
-  // TODO: Identify the type
   async publish(channels: Channel[]): Promise<void> {
     await this.producer.connect();
     await this.producer.send({
       topic: kafkaTopic,
-      messages: [{ value: JSON.stringify(channels) }],
+      messages: [{ value: JSON.stringify({ channels }) }],
     });
   }
 }

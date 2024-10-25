@@ -16,7 +16,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
-  
+
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     depends_on:
@@ -25,6 +25,13 @@ services:
       - 19000:9000
     environment:
       KAFKA_BROKERCONNECT: kafka:9092
+
+  mongodb:
+    image: mongo:7.0
+    environment:
+      - MONGODB_DATABASE="consumer"
+    ports:
+      - 27017:27017
 
   producer-service:
     image: nestjs-microservice-example/producer:latest
@@ -37,5 +44,6 @@ services:
     image: nestjs-microservice-example/consumer:latest
     depends_on:
       - kafka
+      - mongodb
     ports:
       - 3000:3000
