@@ -47,3 +47,10 @@ services:
       - mongodb
     ports:
       - 3000:3000
+
+  channels-fe:
+    image: nestjs-microservice-example/fe:latest
+    depends_on:
+      - consumer-service
+    ports:
+      - 3002:3002

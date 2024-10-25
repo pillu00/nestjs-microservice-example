@@ -1,0 +1,28 @@
+# Use the official Node.js image as the base image
+FROM node:20
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install the application dependencies
+RUN yarn
+
+# Copy the rest of the application files
+COPY . .
+
+# Build the react application
+RUN yarn build
+
+RUN yarn global add serve
+
+# Expose the application port
+EXPOSE 3002
+
+# Set to production environment
+ENV NODE_ENV=production
+
+# Command to run the application
+CMD ["serve", "-s" , "build" , "-l", "3002"]
