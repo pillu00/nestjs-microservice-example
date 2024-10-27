@@ -24,7 +24,7 @@ export default async function fetchData<T>(
 
     if (contentTypeParsed?.includes("application/json")) {
       const data = await response.json();
-      if (response.ok) return data;
+      if (response.ok) return data as T;
     }
 
     const serverError: ServerError = {

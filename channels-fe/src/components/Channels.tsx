@@ -54,13 +54,13 @@ export default function Channels({ access_token }: ChannelsProp) {
   }
 
   if (isError) {
-    return <div>An Error Occurred</div>;
+    return <div>An Error Occurred!!</div>;
   }
 
   return (
     <div>
       {channels?.map((channel) => (
-        <>
+        <React.Fragment key={channel.id}>
           <Divider />
           <Box>
             <Card variant="outlined">
@@ -79,7 +79,7 @@ export default function Channels({ access_token }: ChannelsProp) {
               </CardContent>
             </Card>
           </Box>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
