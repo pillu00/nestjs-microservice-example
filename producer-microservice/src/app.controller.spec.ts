@@ -1,28 +1,48 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ChannelsModule } from './channels/channels.module';
-import { KafkaProducerModule } from './producer/kafka-producer.module';
 
 describe('AppController', () => {
   let appController: AppController;
-  let appService: AppService;
+
+  const mockPublishChannels = jest.fn();
+  const mockAppService = {
+    publishChannels: mockPublishChannels,
+  };
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ChannelsModule, KafkaProducerModule],
       controllers: [AppController],
-      providers: [AppService],
-    }).compile();
+      providers: [
+        {
+          provide: AppService,
+          useValue: mockAppService,
+        },
+      ],
+    })
 
-    appService = app.get<AppService>(AppService);
+      .compile();
+
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should be able to run publish channels', async () => {
-      jest.spyOn(appService, 'publishChannels').mockImplementation(() => Promise.resolve());
-      await appController.publishChannels()
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should be able to run publish channels', async () => {
+    mockPublishChannels.mockImplementation(() => Promise.resolve());
+    await appController.publishChannels();
+    expect(mockAppService.publishChannels).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw error if publishChannels throws one', async () => {
+    mockPublishChannels.mockImplementation(() =>
+      Promise.reject('An Error Occured!!'),
+    );
+    expect(async () => {
+      await appController.publishChannels();
+    }).rejects.toEqual('An Error Occured!!');
+    expect(mockAppService.publishChannels).toHaveBeenCalledTimes(1);
   });
 });
